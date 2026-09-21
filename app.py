@@ -20,16 +20,16 @@ st.set_page_config(page_title="DocMind AI", page_icon="📄", layout="centered")
 with st.sidebar:
     st.header("Settings")
     api_key = st.text_input(
-        "Anthropic API Key",
+        "Gemini API Key",
         type="password",
-        help="Get one at console.anthropic.com. Never shared or stored.",
+        help="Get one free at aistudio.google.com/apikey. Never shared or stored.",
     )
     st.markdown("---")
     st.markdown(
         "**DocMind AI**\n\n"
         "Upload a PDF or image, then ask questions about its content. "
         "Built with Streamlit, pypdf/pytesseract for extraction, "
-        "and the Anthropic API for answers."
+        "and the Google Gemini API for answers."
     )
 
 st.title("📄 DocMind AI")
@@ -75,7 +75,7 @@ if st.session_state.document_text:
 
     if st.button("Summarize this document"):
         if not api_key:
-            st.error("Please enter your Anthropic API key in the sidebar first.")
+            st.error("Please enter your Gemini API key in the sidebar first.")
         else:
             with st.spinner("Summarizing..."):
                 try:
@@ -91,7 +91,7 @@ if st.session_state.document_text:
 
     if st.button("Ask") and question:
         if not api_key:
-            st.error("Please enter your Anthropic API key in the sidebar first.")
+            st.error("Please enter your Gemini API key in the sidebar first.")
         else:
             with st.spinner("Thinking..."):
                 try:
