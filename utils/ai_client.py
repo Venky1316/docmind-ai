@@ -1,15 +1,13 @@
 """
 ai_client.py
 ------------
-Thin wrapper around the Anthropic API so app.py doesn't need to know
-the details of prompt construction. Swap this file out if you ever
-want to point the project at a different provider (e.g. OpenAI) --
-the rest of the app doesn't need to change.
+Thin wrapper around the Google Gemini API so app.py doesn't need to know
+the details of prompt construction.
 """
 
-import anthropic
+import google.generativeai as genai
 
-MODEL = "claude-sonnet-4-5-20250929"
+MODEL = "gemini-1.5-flash"
 MAX_CONTEXT_CHARS = 15000  # keeps requests small & cheap; trims very long docs
 
 
@@ -31,21 +29,13 @@ Answer clearly and concisely."""
 
 
 def ask_question(api_key: str, document_text: str, question: str) -> str:
-    """Send the document + question to Claude and return the answer text."""
-    client = anthropic.Anthropic(api_key=api_key)
+    """Send the document + question to Gemini and return the answer text."""
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel(MODEL)
 
-    response = client.messages.create(
-        model=MODEL,
-        max_tokens=1000,
-        messages=[
-            {"role": "user", "content": build_prompt(document_text, question)}
-        ],
-    )
+    response = model.generate_content(build_prompt(document_text, question))
 
-    # response.content is a list of content blocks; join any text blocks
-    return "".join(
-        block.text for block in response.content if block.type == "text"
-    ).strip()
+    return response.text.strip()
 
 
 def summarize_document(api_key: str, document_text: str) -> str:
@@ -55,3 +45,5 @@ def summarize_document(api_key: str, document_text: str) -> str:
         document_text,
         "Summarize this document in 4-6 sentences, covering the key points.",
     )
+
+
