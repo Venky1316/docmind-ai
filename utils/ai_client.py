@@ -7,7 +7,7 @@ the details of prompt construction.
 
 import google.generativeai as genai
 
-MODEL = "gemini-1.5-flash"
+MODEL = "gemini-3-flash-preview"
 MAX_CONTEXT_CHARS = 15000  # keeps requests small & cheap; trims very long docs
 
 
